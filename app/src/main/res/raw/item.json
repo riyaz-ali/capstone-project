@@ -1,0 +1,1556 @@
+{
+  "id": 18457325,
+  "title": "Slate JS \u2013 A customizable framework for building rich text editors",
+  "points": 403,
+  "user": "migueloller",
+  "time": 1542263420,
+  "time_ago": "a day ago",
+  "type": "link",
+  "content": "",
+  "comments": [
+    {
+      "id": 18457518,
+      "user": "paperpunk",
+      "time": 1542266910,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I&#x27;ve used Slate in a production application for about 2 years now, as part of a CMS for medical professionals to write rich content for other medical professionals and patients.<p>They tend to write the initial content in MS Word which they are comfortable with and then paste into the editor, then the editor has to reconcile this according to the site&#x27;s structural elements. Then for editing, this works fantastically well, and allows more complex widgets and unusual design elements to be embedded and edited in the WYSIWYG context in the editor.<p>When the system was first being built we trialed 10-20 or so other solutions in this space, many with the same design concepts as Slate, but something about this stuck. Just brilliant.",
+      "comments": [
+        {
+          "id": 18461704,
+          "user": "consumer451",
+          "time": 1542305508,
+          "time_ago": "17 hours ago",
+          "type": "comment",
+          "content": "<p>I have been dealing with paste-from-word issues as well. The biggest issue is ordered lists. Word is very smart about keeping the ol going even if there are extra linebreaks in between list items. Most rich text editors mess up this enumeration when pasted from Word. One thing I noticed about slate.js is that it simply converts the ol into text, which keeps the correct numbering.  This is a successful solution.<p>And my question to HN is: why do our web app users keep typing in Word first? I save drafts in local storage, but they still use Word first. Is it the formatting familiarity? Is it a Start Menu shortcut? What is it? What can we do to address users not using our web apps first?",
+          "comments": [
+            {
+              "id": 18463944,
+              "user": "paperpunk",
+              "time": 1542319888,
+              "time_ago": "13 hours ago",
+              "type": "comment",
+              "content": "<p>I think they are comfortable with it from using it for a long time.<p>In fact I find people do everything in MS Office products, generally in ways you wouldn&#x27;t necessarily expect the software to be used. E.g. PowerPoint is the de facto tool for designing conference posters. To create &#x27;versions&#x27; of documents, people will copy and paste the file and add a number at the end.<p>I think we often get so myopic about our perspective on technology that we forget that non-technologists have a vastly different relationship with it.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18463944"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18461704"
+        },
+        {
+          "id": 18458159,
+          "user": "markogresak",
+          "time": 1542276506,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>How do you handle paste from word? Could you share some code? :)",
+          "comments": [
+            {
+              "id": 18467006,
+              "user": "wiktor_walc",
+              "time": 1542350856,
+              "time_ago": "4 hours ago",
+              "type": "comment",
+              "content": "<p>(CKEditor team member speaking) Proper handling pasting from Word really takes a lot of time and it&#x27;s hardly possible to provide a high quality solution alone. We will deliver some basic (in our understanding) support for pasting from office in our most recent editor (<a href=\"https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;<\/a>) in 2-3 weeks and it already took long weeks of development (see <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ckeditor&#x2F;ckeditor5-paste-from-office&#x2F;issues\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ckeditor&#x2F;ckeditor5-paste-from-office&#x2F;issu...<\/a>), even with our years of experience in rich text editing and with this particular feature.<p>If pasting from Word is absolutely critical feature for you you may want to check older editors on the market, like CKEditor 4 or even... TinyMCE, one of our competitors. These editors are on the market for 6+ years and had enough time and people to deal with the crap that MS Word produces - correctly preserving as much formatting as possible, without wasting a lot of your end users time on recreating the same content again in an online rich text editor.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18467006"
+            },
+            {
+              "id": 18464002,
+              "user": "paperpunk",
+              "time": 1542320344,
+              "time_ago": "13 hours ago",
+              "type": "comment",
+              "content": "<p>My issue is mainly that Word doesn&#x27;t really maintain the same structured hierarchy in the XML that HTML would \u2013 it&#x27;s more like a sequential format. The users wanted a way to indicate certain types of content or annotations and they do so via coloring text in certain ways \u2013 but I found in practice this is very hard to reconcile since there is a lot of invisible formatting in word, the element may terminate and start again, with a new invisible element in between. Invisible to the user - but very visible to the parser.<p>Essentially it&#x27;s a balance of attempting to remove all the spurious elements (`&lt;o:p&gt;`, or invisible empty formatting, etc.) and then reason about what remains. Much of that involves a lot of walking the tree to inspect neighbouring nodes because them being co-located can indicate something.<p>Look you may be recoiling in horror by now \u2013 it sounds horrific. Actually what we have is a remarkably stable system all things considered but it was built up over time. I think the only approach you can take is write a large amount of unit tests for the schema normaliser, with real MS-word samples and expected outputs, and then really put the system through its paces. Every time you find an example that breaks your model, add a unit test for that snippet, and evolve.<p>God forbid a Word update ever introduces a new format.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18464002"
+            },
+            {
+              "id": 18459843,
+              "user": "stronglikedan",
+              "time": 1542294911,
+              "time_ago": "20 hours ago",
+              "type": "comment",
+              "content": "<p>It seems to somewhat work in the Paste HTML example [0], for which the source is available [1]. I just did a cursory test with some simple formatting, so YMMV, but it may be a good starting point.<p>[0] <a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;paste-html\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;paste-html<\/a>\n[1] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;tree&#x2F;master&#x2F;examples&#x2F;paste-html\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;tree&#x2F;master&#x2F;examples...<\/a>",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18459843"
+            },
+            {
+              "id": 18458429,
+              "user": "tomspeak",
+              "time": 1542280892,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Also very interested in this, we&#x27;ve had issues with dealing with reconciling external copy and pasting.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458429"
+            },
+            {
+              "id": 18458185,
+              "user": "sbr464",
+              "time": 1542276968,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Curious also about any gotchas, etc.",
+              "comments": [
+                {
+                  "id": 18460760,
+                  "user": "c-smile",
+                  "time": 1542300239,
+                  "time_ago": "18 hours ago",
+                  "type": "comment",
+                  "content": "<p>Here is &quot;DOM canibalizer&quot; module from my HTML-NOTEPAD ( <a href=\"https:&#x2F;&#x2F;html-notepad.com\" rel=\"nofollow\">https:&#x2F;&#x2F;html-notepad.com<\/a> ) :<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;c-smile&#x2F;sciter-sdk&#x2F;blob&#x2F;master&#x2F;notepad&#x2F;res&#x2F;htmlview&#x2F;canonicalize-dom.tis\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;c-smile&#x2F;sciter-sdk&#x2F;blob&#x2F;master&#x2F;notepad&#x2F;re...<\/a><p>While it looks pretty simple it cleans MS Word and browser artifacts in pasted markup pretty well.<p>But I shall admit that such simplicity is possible only with sciter (that html-notepad is based on). E.g. that canonicalizeDOM gets called <i>before<\/i> the content appears in target document. So all this does not affect undo&#x2F;redo stack, etc.",
+                  "comments": [
+
+                  ],
+                  "comments_count": 0,
+                  "level": 3,
+                  "url": "item?id=18460760"
+                }
+              ],
+              "comments_count": 1,
+              "level": 2,
+              "url": "item?id=18458185"
+            }
+          ],
+          "comments_count": 6,
+          "level": 1,
+          "url": "item?id=18458159"
+        },
+        {
+          "id": 18460928,
+          "user": "jrowley",
+          "time": 1542301100,
+          "time_ago": "18 hours ago",
+          "type": "comment",
+          "content": "<p>Off topic, but I&#x27;m curious, can you tell me more about the CMS application?",
+          "comments": [
+            {
+              "id": 18464085,
+              "user": "paperpunk",
+              "time": 1542321044,
+              "time_ago": "12 hours ago",
+              "type": "comment",
+              "content": "<p>It was an attempt to provide a resource for comprehensive, in-depth, accessible information for maxillofacial &#x2F; heck &amp; neck patients and practitioners. Part of the movement of empowering patients by giving them the information traditionally held by clinicians, but also helping clinicians to be aware of scientific research from adjacent disciplines that might be useful.<p>The CMS design comes into it because when you have a larger collection of non-technical authors you need an accessible way to manage the content. This was how it was initially conceived anyway - in practice more development time had to go towards handling the users&#x27; existing workflow (MS Word) rather than migrating them into the CMS directly. A real eye-opener for me about user-centred design..<p><a href=\"https:&#x2F;&#x2F;maxfacts.uk\" rel=\"nofollow\">https:&#x2F;&#x2F;maxfacts.uk<\/a>",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18464085"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18460928"
+        }
+      ],
+      "comments_count": 11,
+      "level": 0,
+      "url": "item?id=18457518"
+    },
+    {
+      "id": 18458166,
+      "user": "digitalbase",
+      "time": 1542276583,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>We&#x27;re using Slate to for a mid-sized react application where content editing is the core. I don&#x27;t want to link&#x2F;plug a product video showing you how it works but imagine dropbox paper, medium editor, CKeditor 5, ...<p>The implementation includes mentions, pretty complex gallery&#x2F;inline image functionality, galleries with size&#x2F;output controls, embeds (iframely) and other inline elements.<p>First we had TinyMCE, Redactor, DraftJS and then switched to Slate.<p>I would not say it&#x27;s smooth sailing from here, we&#x27;re mostly struggling with pasting from word, tables, mobile support and overall performance with the number of plugins, but working on it.",
+      "comments": [
+        {
+          "id": 18461950,
+          "user": "k7d",
+          "time": 1542307100,
+          "time_ago": "16 hours ago",
+          "type": "comment",
+          "content": "<p>Similar story here - started with DraftJS but it was kind of cumbersome. Slate in comparison is much more flexible and we&#x27;ve been using it in production for almost a year now. In fact we just launched a sticky notes project management tool which features a smooth rich text editing based on slate <a href=\"https:&#x2F;&#x2F;whimsical.co&#x2F;sticky-notes&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;whimsical.co&#x2F;sticky-notes&#x2F;<\/a>",
+          "comments": [
+            {
+              "id": 18465401,
+              "user": "HaHa31",
+              "time": 1542331700,
+              "time_ago": "10 hours ago",
+              "type": "comment",
+              "content": "<p>So, I have to ask why whimsical.co&#x27;s navigation is so counter-intuitive? Why do arrow keys move the screen the opposite direction, and why is there no drag and drop? I am not trying to be aggressive, I just want to understand the design decision?",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18465401"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18461950"
+        },
+        {
+          "id": 18458208,
+          "user": "hailk",
+          "time": 1542277376,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Pasting from word and mobile support are two things I struggled with on draft. How much easier or difficult it is with slate in your experience?",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458208"
+        },
+        {
+          "id": 18458178,
+          "user": "sbr464",
+          "time": 1542276834,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>What was the main reason for switching from draftjs to slate? Just curious since we\u2019ve been working on various tools in the space (not directly related to either). Was it an api design issue or more a plugin&#x2F;ecosystem issue?",
+          "comments": [
+            {
+              "id": 18458698,
+              "user": "iand675",
+              "time": 1542285014,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Can&#x27;t speak for OP, but draftjs didn&#x27;t work well on mobile at all for a major project I tried to use it in. Had to migrate off of it.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458698"
+            },
+            {
+              "id": 18458180,
+              "user": "digitalbase",
+              "time": 1542276915,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>We just had too many problems to modify it + it seemed facebook had completely abandoned the project.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458180"
+            },
+            {
+              "id": 18461517,
+              "user": "thehazard",
+              "time": 1542304516,
+              "time_ago": "17 hours ago",
+              "type": "comment",
+              "content": "<p>Moving from updating state via state diffs (Draft) to discrete operations (Slate) is a huge architectural advantage, among other things.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18461517"
+            }
+          ],
+          "comments_count": 3,
+          "level": 1,
+          "url": "item?id=18458178"
+        },
+        {
+          "id": 18459397,
+          "user": "cloverich",
+          "time": 1542291794,
+          "time_ago": "21 hours ago",
+          "type": "comment",
+          "content": "<p>I wish you would post a product link. For me personally, I really enjoy when some library or what have you front pages, and people post a mix of comments and products showing off its usage or an alternative to it.",
+          "comments": [
+            {
+              "id": 18459451,
+              "user": "timdorr",
+              "time": 1542292226,
+              "time_ago": "20 hours ago",
+              "type": "comment",
+              "content": "<p>Based on their comment history, it&#x27;s Prezly: <a href=\"https:&#x2F;&#x2F;www.prezly.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.prezly.com&#x2F;<\/a>",
+              "comments": [
+                {
+                  "id": 18460994,
+                  "user": "digitalbase",
+                  "time": 1542301387,
+                  "time_ago": "18 hours ago",
+                  "type": "comment",
+                  "content": "<p>Here are 2 wistia video&#x27;s on images in slate specifically. The one on the bottom includes images + galleries<p><a href=\"https:&#x2F;&#x2F;www.prezly.com&#x2F;news&#x2F;the-different-ways-to-use-images-in-your-prezly-stories\" rel=\"nofollow\">https:&#x2F;&#x2F;www.prezly.com&#x2F;news&#x2F;the-different-ways-to-use-images...<\/a>",
+                  "comments": [
+
+                  ],
+                  "comments_count": 0,
+                  "level": 3,
+                  "url": "item?id=18460994"
+                }
+              ],
+              "comments_count": 1,
+              "level": 2,
+              "url": "item?id=18459451"
+            }
+          ],
+          "comments_count": 2,
+          "level": 1,
+          "url": "item?id=18459397"
+        },
+        {
+          "id": 18461607,
+          "user": "audiolion",
+          "time": 1542304966,
+          "time_ago": "17 hours ago",
+          "type": "comment",
+          "content": "<p>interesting, I am using TinyMCE and paying them for the PowerPaste plugin, figure a team that manages pastes from Word will do a better job than I could, and $1850&#x2F;year.. I couldn&#x27;t easily make that feature and maintain it for that money.<p>I am surprised there is no open source tool for cleaning up pastes from word and giving you HTML.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18461607"
+        }
+      ],
+      "comments_count": 11,
+      "level": 0,
+      "url": "item?id=18458166"
+    },
+    {
+      "id": 18457818,
+      "user": "marijn",
+      "time": 1542271772,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Note that though this lists ProseMirror as one of the evaluated editors, followed by a bullet list of issues, only one of those issues can reasonably be considered to apply to ProseMirror\u2014and that&#x27;s &quot;Re-inventing the view layer&quot;, i.e. &quot;doesn&#x27;t use React&quot;, which can arguably be an advantage.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18457818"
+    },
+    {
+      "id": 18457698,
+      "user": "rayalez",
+      "time": 1542269813,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Absolutely brilliant editor! I use it for my projects - <a href=\"https:&#x2F;&#x2F;writingstreak.io\" rel=\"nofollow\">https:&#x2F;&#x2F;writingstreak.io<\/a> and <a href=\"https:&#x2F;&#x2F;nulis.io\" rel=\"nofollow\">https:&#x2F;&#x2F;nulis.io<\/a>.<p>I&#x27;ve also recommended <a href=\"http:&#x2F;&#x2F;letterpad.app&#x2F;\" rel=\"nofollow\">http:&#x2F;&#x2F;letterpad.app&#x2F;<\/a> to use it and they&#x27;ve switched to it now.<p>I&#x27;m a huge fan, it&#x27;s insanely powerful and customizable, you can build anything you want with it.<p>The only problem is lack of documentation and tutorials, it&#x27;s really hard to figure out how to use it beyond the very basics (for me at least). They do have a great community in the slack channel, they&#x27;ve helped me a lot, but better docs would make a huge difference.",
+      "comments": [
+        {
+          "id": 18458088,
+          "user": "melicerte",
+          "time": 1542275533,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>[OT] Writingstreak is very interesting, and the gamification looks promising. I&#x27;m not sure I have the time to write on a daily basis, but be asured I&#x27;ll think about it and eventually register.<p>Thanks for sharing.",
+          "comments": [
+            {
+              "id": 18458129,
+              "user": "kieckerjan",
+              "time": 1542276056,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>[OT too] Second that. I just wish there was more info on where the data is stored, etc. Looks a bit immature right now.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458129"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18458088"
+        },
+        {
+          "id": 18459408,
+          "user": "raihansaputra",
+          "time": 1542291896,
+          "time_ago": "21 hours ago",
+          "type": "comment",
+          "content": "<p>nulis.io is freaking cool! Do you ever think of having vim-like navigation mode for it?",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18459408"
+        }
+      ],
+      "comments_count": 3,
+      "level": 0,
+      "url": "item?id=18457698"
+    },
+    {
+      "id": 18457723,
+      "user": "Arathorn",
+      "time": 1542270370,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>We just migrated from Draft to Slate for Riot.im: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;matrix-org&#x2F;matrix-react-sdk&#x2F;pull&#x2F;1890\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;matrix-org&#x2F;matrix-react-sdk&#x2F;pull&#x2F;1890<\/a><p>In general it\u2019s been a massive improvement, with the nasty catch that IME input doesn\u2019t work reliably, impacting CJK languages and similar: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;vector-im&#x2F;riot-web&#x2F;issues&#x2F;7665\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;vector-im&#x2F;riot-web&#x2F;issues&#x2F;7665<\/a>.",
+      "comments": [
+        {
+          "id": 18458149,
+          "user": "sandGorgon",
+          "time": 1542276340,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>hey - we are considering moving to riot&#x2F;modular as well from Hipchat. We love that you guys use Matrix.org underneath and that its opensource.<p>There were a couple of irritating UI bugs around the editor that we were waiting for. this is good to hear and thanks for your work!<p>P.S. also the android app .... kind of needs a lot of work, but im hopeful",
+          "comments": [
+            {
+              "id": 18458184,
+              "user": "Arathorn",
+              "time": 1542276961,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>we&#x27;re making good progress in a ground-up rewrite of the android app in kotlin with realm and Rx (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;vector-im&#x2F;riot-android-redesign-PoC&#x2F;tree&#x2F;develop\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;vector-im&#x2F;riot-android-redesign-PoC&#x2F;tree&#x2F;...<\/a>), which is an <i>unrecognisable<\/i> improvement.<p>meanwhile on riot-web we&#x27;re doing our best to track down the remaining Slate-related composer glitches!",
+              "comments": [
+                {
+                  "id": 18458415,
+                  "user": "sandGorgon",
+                  "time": 1542280583,
+                  "time_ago": "a day ago",
+                  "type": "comment",
+                  "content": "<p>Good to know. I may have added a comment to one myself - especially around copy pasting code in the editor.<p>Also, just so you know... there&#x27;s a lot of confusion around riot with your multiple names:<p>vector.im - name of the company. No social media presence.<p>riot.im - name of the webapp. This is your twitter handle.<p>modular.im - name of your hosted product where you are actually making money. For a mission critical product, you dont even have a contact-us email. You also dont have a list of features - you are assuming people who come here are super aware of Matrix features. Even this is so much better - <a href=\"https:&#x2F;&#x2F;docs.google.com&#x2F;spreadsheets&#x2F;d&#x2F;1-UlA4-tslROBDS9IqHalWVztqZo7uxlCeKPQ-8uoFOU&#x2F;edit#gid=0\" rel=\"nofollow\">https:&#x2F;&#x2F;docs.google.com&#x2F;spreadsheets&#x2F;d&#x2F;1-UlA4-tslROBDS9IqHal...<\/a><p>matrix.org - half the UI source code is here (other the API reference implementation which is the only thing that a standards organization should have). So where do we file bugs ? on vector-im&#x2F;riot-web (!!) or matrix.org .<p><i>As of Aug 2018, the only skin that exists is vector-im&#x2F;riot-web; it and matrix-org&#x2F;matrix-react-sdk should effectively be considered as a single project (for instance, matrix-react-sdk bugs are currently filed against vector-im&#x2F;riot-web rather than this project).<\/i><p>Its super weird and confusing. Riot is a cool name (and my personal favorite)... but use anything you want. Just have one name - Gitlab does this so very well (with both its open source product and hosted product)",
+                  "comments": [
+
+                  ],
+                  "comments_count": 0,
+                  "level": 3,
+                  "url": "item?id=18458415"
+                }
+              ],
+              "comments_count": 1,
+              "level": 2,
+              "url": "item?id=18458184"
+            }
+          ],
+          "comments_count": 2,
+          "level": 1,
+          "url": "item?id=18458149"
+        }
+      ],
+      "comments_count": 3,
+      "level": 0,
+      "url": "item?id=18457723"
+    },
+    {
+      "id": 18457819,
+      "user": "maged",
+      "time": 1542271779,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>FYI, kept hitting this stacktrace in the demo:<p>TypeError: Cannot read property &#x27;key&#x27; of undefined\n    at a.n.renderBlockButton (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:22776\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2277...<\/a>)\n    at a.value (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:25055\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2505...<\/a>)\n    at Mi (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:62668\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6266...<\/a>)\n    at Ti (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:67552\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6755...<\/a>)\n    at mo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77129\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7712...<\/a>)\n    at fo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77436\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7743...<\/a>)\n    at Zo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80984\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8098...<\/a>)\n    at Vo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80496\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8049...<\/a>)\n    at Wo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80322\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8032...<\/a>)\n    at Io (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:79695\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7969...<\/a>)<p><pre><code>    in a\n    in a\n    in a\n    in div\n    in Styled(div)\n    in div\n    in a\n    in a\n    in a<\/code><\/pre>",
+      "comments": [
+        {
+          "id": 18458022,
+          "user": "DougBTX",
+          "time": 1542274515,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>PR to fix it here: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;pull&#x2F;2412\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;pull&#x2F;2412<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458022"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18457819"
+    },
+    {
+      "id": 18457600,
+      "user": "ericmcer",
+      "time": 1542268095,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I feel like some of the biggest difficulties Rich text editors in browsers face nowadays are supporting social media type inputs like mentions, hashtags, emojis, etc. while still maintaining the classic rich text selections. DraftJs is the only one that achieved that for me, I had to do some serious elbow grease to get functioning hashtags in Redactor (another rich text editor). \nSlateJS user mentions are far away from what users expect a mentions plugin to work like.",
+      "comments": [
+        {
+          "id": 18463562,
+          "user": "madspindel",
+          "time": 1542317439,
+          "time_ago": "13 hours ago",
+          "type": "comment",
+          "content": "<p>Take a look at quill-mention (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;afconsult&#x2F;quill-mention\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;afconsult&#x2F;quill-mention<\/a>)<p>Disclaimer: I made it.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18463562"
+        },
+        {
+          "id": 18457798,
+          "user": "fastball",
+          "time": 1542271573,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>What exactly is lacking from the Mentions example for you?",
+          "comments": [
+            {
+              "id": 18458199,
+              "user": "digitalbase",
+              "time": 1542277248,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>The mention plugins is easily fixable and simple functionality. We have that fixed for a long time now.<p>It should not be a reason not to consider slate",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458199"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18457798"
+        },
+        {
+          "id": 18458123,
+          "user": "mydigitalself",
+          "time": 1542276023,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>What&#x27;s wrong with the current mentions plugin and what&#x27;s preventing you from writing a new one or improving the existing one with a PR?",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458123"
+        },
+        {
+          "id": 18458086,
+          "user": "sbr464",
+          "time": 1542275523,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>What issues are you seeing with slate? I was able to integrate pretty easily several advanced mention style patterns (similar to how slack integrations work) using draftjs. Assuming how slate has addressed other draftjs design issues, I can\u2019t imagine the api would be far off. I\u2019m curoious since we are working in this space currently.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458086"
+        },
+        {
+          "id": 18457715,
+          "user": "coldtea",
+          "time": 1542270133,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>In which context, outside a social media website, are &quot;mentions&quot; a common part of text editing on the web?",
+          "comments": [
+            {
+              "id": 18457736,
+              "user": "mgiannopoulos",
+              "time": 1542270621,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Jira has mentions and it\u2019s not social media. Basically anything with users who need to communicate(?)",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18457736"
+            },
+            {
+              "id": 18458305,
+              "user": "sbr464",
+              "time": 1542278859,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Tons. I think it\u2019s a modern UX issue, and the fact that social platforms popularized an @, #, shortcut platform means even my mom (somehow) knows how to use it. It\u2019s a stretch saying, but i feel there\u2019s a loss for a developer&#x2F;product to not take advantage of the momentum around popularized social-style tagging patterns for unrelated use cases.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458305"
+            },
+            {
+              "id": 18458020,
+              "user": "sealjam",
+              "time": 1542274501,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Dropbox paper has mentions and I wouldn&#x27;t consider it social media. Same for trello.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458020"
+            },
+            {
+              "id": 18458476,
+              "user": "manigandham",
+              "time": 1542281628,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Many apps that have collaboration features support some type of mentions and labels to tag users.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458476"
+            }
+          ],
+          "comments_count": 4,
+          "level": 1,
+          "url": "item?id=18457715"
+        }
+      ],
+      "comments_count": 10,
+      "level": 0,
+      "url": "item?id=18457600"
+    },
+    {
+      "id": 18459251,
+      "user": "migueloller",
+      "time": 1542290438,
+      "time_ago": "21 hours ago",
+      "type": "comment",
+      "content": "<p>Discovered Slate last night while evaluating Draft.js for building the rich text editing experience of our WYSIWYG editor.<p>After running into some issues with Draft.js\u2019 [1] Flow types, and going deep into the GitHub repo looking for solutions, I concluded that the project wasn\u2019t receiving enough support from Facebook to invest in it. [2][3]<p>After discovering Slate from one of the issues, I was extremely impressed with its documentation and well designed API. The plugin system is so good it even gives me some ideas on how to design our WYSIWYG\u2019s API.<p>And for people that don\u2019t use React, while there aren\u2019t any official plugins for other libraries yet, the source [4] is so readable that making one wouldn\u2019t be hard at all. I\u2019m sure contributions would be accepted for a Vue plugin, Angular plugin, or even a vanilla plugin. In the React plugin there\u2019s a DOM plugin used already! [5]<p>Ian did an amazing job! Thought it was worth sharing.<p>[1] <a href=\"https:&#x2F;&#x2F;draftjs.org\" rel=\"nofollow\">https:&#x2F;&#x2F;draftjs.org<\/a><p>[2] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;facebook&#x2F;draft-js&#x2F;issues&#x2F;1193\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;facebook&#x2F;draft-js&#x2F;issues&#x2F;1193<\/a><p>[3] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;facebook&#x2F;draft-js&#x2F;tree&#x2F;master&#x2F;meta&#x2F;meeting-notes\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;facebook&#x2F;draft-js&#x2F;tree&#x2F;master&#x2F;meta&#x2F;meetin...<\/a><p>[4] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;tree&#x2F;master&#x2F;packages&#x2F;slate&#x2F;src\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;tree&#x2F;master&#x2F;packages...<\/a><p>[5] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;blob&#x2F;master&#x2F;packages&#x2F;slate-react&#x2F;src&#x2F;plugins&#x2F;dom.js\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;blob&#x2F;master&#x2F;packages...<\/a>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18459251"
+    },
+    {
+      "id": 18457586,
+      "user": "devwastaken",
+      "time": 1542267901,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I haven&#x27;t found an editor that can act anything like word in relation to object placement. I should be able to drag images around and have it automatically format with my document. I should be able to resize just by dragging on the edges. Same goes for embeds, graphs, etc.<p>I believe wordpress has had some commercial plugins that could do this well, but I have not found an open source editor that redefines rich text editing at all.",
+      "comments": [
+        {
+          "id": 18458521,
+          "user": "wangyjx",
+          "time": 1542282467,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>The confluence&#x27;s editor somewhat meet your needs.",
+          "comments": [
+            {
+              "id": 18467183,
+              "user": "devwastaken",
+              "time": 1542353658,
+              "time_ago": "3 hours ago",
+              "type": "comment",
+              "content": "<p>Good call, though it&#x27;s commercial as usual.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18467183"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18458521"
+        }
+      ],
+      "comments_count": 2,
+      "level": 0,
+      "url": "item?id=18457586"
+    },
+    {
+      "id": 18458231,
+      "user": "z3t4",
+      "time": 1542277734,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I made a rich text editor in 2004 and last year I made another one, and <i>nothing has changed<\/i>. The most annoying thing is that contentEditable works different in different Browsers. Some browsers for example use &lt;div&gt; instead of &lt;p&gt;. And browsers will add extra HTML elements! If you for example pass in &lt;table&gt; the contentEditable will add a &lt;thead&gt; element, so you constantly have to check what the contentEditable is up to. It would probably be easier to use HTML Canvas and implement everything from scratch.",
+      "comments": [
+        {
+          "id": 18459195,
+          "user": "evangow",
+          "time": 1542289998,
+          "time_ago": "21 hours ago",
+          "type": "comment",
+          "content": "<p>You might be interested in the video linked below on how DraftJS (which was the forerunner of SlateJS) uses the virtual DOM created by React along with contentEditable to make the same tooling work across browsers.<p><a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=feUYwoLhE_4\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=feUYwoLhE_4<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18459195"
+        },
+        {
+          "id": 18458628,
+          "user": "nkozyra",
+          "time": 1542284223,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Isn&#x27;t this why a bunch of wysiwg editors eschew contenteditable in the first place?",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458628"
+        }
+      ],
+      "comments_count": 2,
+      "level": 0,
+      "url": "item?id=18458231"
+    },
+    {
+      "id": 18457560,
+      "user": "arsalanb",
+      "time": 1542267464,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>This is something I may switch to, if it proves to have any significant advantages over Quill (<a href=\"https:&#x2F;&#x2F;quilljs.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;quilljs.com&#x2F;<\/a>) which we currently use.<p>Currently it seems to not support customising and&#x2F;or creating your own blots (like here \u2014 <a href=\"http:&#x2F;&#x2F;quilljs.com&#x2F;guides&#x2F;how-to-customize-quill&#x2F;#customizing-blots\" rel=\"nofollow\">http:&#x2F;&#x2F;quilljs.com&#x2F;guides&#x2F;how-to-customize-quill&#x2F;#customizin...<\/a>)<p>Also, while we&#x27;re at it, syncing operations (and example of which is shown here \u2014 <a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;syncing-operations\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;syncing-operations<\/a>) was a hard concept to wrap my head around until I found this \u2014 <a href=\"https:&#x2F;&#x2F;operational-transformation.github.io&#x2F;visualization.html\" rel=\"nofollow\">https:&#x2F;&#x2F;operational-transformation.github.io&#x2F;visualization.h...<\/a>",
+      "comments": [
+        {
+          "id": 18457974,
+          "user": "slow_donkey",
+          "time": 1542273800,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>We&#x27;re on quill as well  - any reason you&#x27;d want to switch?<p>We haven&#x27;t encountered any issues aside from having to write our own parsers (Delta to react native components)",
+          "comments": [
+            {
+              "id": 18458357,
+              "user": "ergo14",
+              "time": 1542279571,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>I will be probably switching from quill to prosemirror because quill ignores numerous requests for shadow dom compat. It also annoyed me that its hard to get rendered delta results from it - we had some workarounds for it, maybe they provide an API for that nowdays.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458357"
+            },
+            {
+              "id": 18458226,
+              "user": "arsalanb",
+              "time": 1542277689,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>Absolutely no reason to switch, from reading up on Slate in the past few hours.",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458226"
+            }
+          ],
+          "comments_count": 2,
+          "level": 1,
+          "url": "item?id=18457974"
+        },
+        {
+          "id": 18458689,
+          "user": "amelius",
+          "time": 1542284927,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>I found that last link very nice!",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458689"
+        }
+      ],
+      "comments_count": 4,
+      "level": 0,
+      "url": "item?id=18457560"
+    },
+    {
+      "id": 18457499,
+      "user": "Neablis",
+      "time": 1542266391,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>The examples all break if you click off the editor, then click back in on the editor.",
+      "comments": [
+        {
+          "id": 18458012,
+          "user": "melicerte",
+          "time": 1542274364,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Same here, under firefox 63.0, ubuntu 16.04",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458012"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18457499"
+    },
+    {
+      "id": 18457608,
+      "user": "robinwassen",
+      "time": 1542268286,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Looks promising. After working with and evaluating many rich text editors I usually consider building one myself as a nightmare, due to the interaction complexity and browser differences.<p>One thing that strikes me with this editor, similar to many others that are innovative and promising, is how Edge and mobile are not first class citizens.<p>That will severly limit the use case for the editor to niche products or embedded in apps build in Electron or similar.",
+      "comments": [
+        {
+          "id": 18466961,
+          "user": "wiktor_walc",
+          "time": 1542350356,
+          "time_ago": "4 hours ago",
+          "type": "comment",
+          "content": "<p>CKEditor team member here :)<p>If you are looking for a modern, modular editor, with a custom data model and collaboration check CKEditor 5 (<a href=\"https:&#x2F;&#x2F;ckeditor.com&#x2F;docs&#x2F;ckeditor5&#x2F;latest&#x2F;features&#x2F;index.html\" rel=\"nofollow\">https:&#x2F;&#x2F;ckeditor.com&#x2F;docs&#x2F;ckeditor5&#x2F;latest&#x2F;features&#x2F;index.ht...<\/a> and <a href=\"https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;<\/a>). It comes with decent mobile and Edge support already (Electron is supported too). Paste from Word will be delivered within 2-3 weeks. For collaboration we already offer a complete and stable solution out of the box where you don&#x27;t have to code anything. If you are curious check <a href=\"https:&#x2F;&#x2F;ckeditor.com&#x2F;blog&#x2F;Lessons-learned-from-creating-a-rich-text-editor-with-real-time-collaboration&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;ckeditor.com&#x2F;blog&#x2F;Lessons-learned-from-creating-a-ri...<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18466961"
+        },
+        {
+          "id": 18458032,
+          "user": "DougBTX",
+          "time": 1542274654,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Do they have any docs covering what&#x27;s supported on mobile?<p>Edit: reading through their issue tracker, looks like they&#x27;re going to make a good go at it, but it is hard: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;issues&#x2F;2062#issuecomment-425788946\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;issues&#x2F;2062#issuecom...<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458032"
+        }
+      ],
+      "comments_count": 2,
+      "level": 0,
+      "url": "item?id=18457608"
+    },
+    {
+      "id": 18458229,
+      "user": "digitalbase",
+      "time": 1542277704,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Gitbook (powering the documentation in this link) is also using Slate but they Forked it.<p>Here is why <a href=\"https:&#x2F;&#x2F;github.com&#x2F;GitbookIO&#x2F;slate&#x2F;blob&#x2F;master&#x2F;Readme.md\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;GitbookIO&#x2F;slate&#x2F;blob&#x2F;master&#x2F;Readme.md<\/a><p>All slate repos @ <a href=\"https:&#x2F;&#x2F;github.com&#x2F;GitbookIO?utf8=&amp;q=slate&amp;type=&amp;language=\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;GitbookIO?utf8=&amp;q=slate&amp;type=&amp;language=<\/a>",
+      "comments": [
+        {
+          "id": 18458838,
+          "user": "thanatropism",
+          "time": 1542286340,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>&gt; We are not in any case criticizing Slate&#x27;s community or the work Ian has done. GitBook simply must focus on improving the experience of its users, which requires fixing core issues in our editor (mainly performances) that are impacting our business.<p>&gt; Our goal is not to replace Slate with our fork within the community. We do not expect people to use our fork. If you do, you should know that we will not accept contributions that are not fully aligned with our goals.<p>This is how the Lucid Emacs situation should have been handled!",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458838"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18458229"
+    },
+    {
+      "id": 18457527,
+      "user": "be5invis",
+      "time": 1542267027,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Rich text editors&#x27; complexity is far beyond ordinary programmer&#x27;s imagination, especially when complex script (like Arabic) is in it.<p>It is really good to see they have RTL support.<p>-- However they messed up when using composing IMEs :(",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18457527"
+    },
+    {
+      "id": 18458172,
+      "user": "ergo14",
+      "time": 1542276679,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>&quot;Built on top of react&quot;, sorry at least for now it is too big of a dependency for most projects that are not react based. IMO that disqualifies it from being &quot;framework for building rich text editors&quot;.",
+      "comments": [
+        {
+          "id": 18466906,
+          "user": "wiktor_walc",
+          "time": 1542349765,
+          "time_ago": "5 hours ago",
+          "type": "comment",
+          "content": "<p>If you are looking for a completely framework-agnostic rich text editor, then check CKEditor 5 (<a href=\"https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;ckeditor.com&#x2F;ckeditor-5&#x2F;<\/a>). It comes with it&#x27;s own UI library which you can swap freely with any other UI thanks a to highly decoupled architecture.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18466906"
+        },
+        {
+          "id": 18459181,
+          "user": "migueloller",
+          "time": 1542289836,
+          "time_ago": "21 hours ago",
+          "type": "comment",
+          "content": "<p>The core actually doesn\u2019t rely on React at all, allowing interop with any front-end framework, or even vanilla JS. The current plugins provided officially are React plugins, but other plugins can be built for Vue, Angular, etc.",
+          "comments": [
+            {
+              "id": 18459444,
+              "user": "ergo14",
+              "time": 1542292177,
+              "time_ago": "21 hours ago",
+              "type": "comment",
+              "content": "<p>I opened package.json I can see:<p><pre><code>    &quot;react&quot;: &quot;^16.4.1&quot;,\n    &quot;react-dom&quot;: &quot;^16.4.1&quot;,\n    &quot;react-emotion&quot;: &quot;^9.2.4&quot;,\n    &quot;react-hot-loader&quot;: &quot;^3.1.3&quot;,\n    &quot;react-portal&quot;: &quot;^4.1.5&quot;,\n    &quot;react-router-dom&quot;: &quot;^4.3.1&quot;,\n    &quot;react-values&quot;: &quot;^0.3.0&quot;,\n<\/code><\/pre>\nLooks like it requires react+vdom to me to be functional,\nCore has a peer dependency on react too.",
+              "comments": [
+                {
+                  "id": 18459877,
+                  "user": "migueloller",
+                  "time": 1542295144,
+                  "time_ago": "20 hours ago",
+                  "type": "comment",
+                  "content": "<p>It does at the moment based on the manifest, but after exploring the source, it&#x27;s clear that this can easily be changed.",
+                  "comments": [
+
+                  ],
+                  "comments_count": 0,
+                  "level": 3,
+                  "url": "item?id=18459877"
+                }
+              ],
+              "comments_count": 1,
+              "level": 2,
+              "url": "item?id=18459444"
+            }
+          ],
+          "comments_count": 2,
+          "level": 1,
+          "url": "item?id=18459181"
+        },
+        {
+          "id": 18458190,
+          "user": "sbr464",
+          "time": 1542277060,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Which framework (or non) are you using, if not react? Just curious, or what would be a better (web related) base?",
+          "comments": [
+            {
+              "id": 18458344,
+              "user": "ergo14",
+              "time": 1542279356,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>&quot;Better&quot; is a subjective thing. Currently I use lit-element base class for web components, but I plan to try stencil and vue to see how it feels like. At work we also use react for some projects.",
+              "comments": [
+                {
+                  "id": 18458412,
+                  "user": "sbr464",
+                  "time": 1542280545,
+                  "time_ago": "a day ago",
+                  "type": "comment",
+                  "content": "<p>I agree, thanks for sharing notes.",
+                  "comments": [
+
+                  ],
+                  "comments_count": 0,
+                  "level": 3,
+                  "url": "item?id=18458412"
+                }
+              ],
+              "comments_count": 1,
+              "level": 2,
+              "url": "item?id=18458344"
+            }
+          ],
+          "comments_count": 2,
+          "level": 1,
+          "url": "item?id=18458190"
+        },
+        {
+          "id": 18458240,
+          "user": "neya",
+          "time": 1542277831,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Oh, thanks for pointing that out, I totally missed it. I use VueJS, so this would be a pass from me.",
+          "comments": [
+            {
+              "id": 18458348,
+              "user": "ergo14",
+              "time": 1542279416,
+              "time_ago": "a day ago",
+              "type": "comment",
+              "content": "<p>I think prosemirror is a good option here, it is framework agnostic solution from codemirror author (I did not use it personally yet).",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18458348"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18458240"
+        }
+      ],
+      "comments_count": 9,
+      "level": 0,
+      "url": "item?id=18458172"
+    },
+    {
+      "id": 18458064,
+      "user": "Findeton",
+      "time": 1542275079,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I am using Slate Js and it&#x27;s fantastic, though there are some caveats. Mobile support is limited, slate is still not in a stable release so there may be breaking changes, and for now you&#x27;re limited to using react. But when it works, it&#x27;s amazing! I really like the freedom it gives you in defining and changing your own document schema and how everything is rendered.",
+      "comments": [
+        {
+          "id": 18467237,
+          "user": "dumbfoundded",
+          "time": 1542354484,
+          "time_ago": "3 hours ago",
+          "type": "comment",
+          "content": "<p>I think the biggest fault is a lack of virtual rendering. Slate renders the entire document so if you&#x27;re doc is too big, slate starts to break fast. Virtual rendering (like in the Ace Editor) solves the problem.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18467237"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18458064"
+    },
+    {
+      "id": 18458422,
+      "user": "thomasfl",
+      "time": 1542280697,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>The markdown shortcuts example, is an absolute joy to use <a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;markdown-shortcuts\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;markdown-shortcuts<\/a>\nYou type in markdown and you see formatted text<p>I would love to see this in use for comments on HN, Reddit, Github and everywhere else.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458422"
+    },
+    {
+      "id": 18457523,
+      "user": "dumbfoundded",
+      "time": 1542266992,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Really cool to see this. I built temi.com on this. You can check out a demo here: <a href=\"https:&#x2F;&#x2F;www.temi.com&#x2F;good-audio-quality\" rel=\"nofollow\">https:&#x2F;&#x2F;www.temi.com&#x2F;good-audio-quality<\/a>",
+      "comments": [
+        {
+          "id": 18457856,
+          "user": "jazzyjackson",
+          "time": 1542272280,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Very nice tool to correct the auto-generated transcript, bookmarked",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457856"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18457523"
+    },
+    {
+      "id": 18457796,
+      "user": "Accacin",
+      "time": 1542271532,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Does this work on Android Mobile? We just implemented a feature before realising Draft.js doesnt&#x27; work on Android Mobile - Our fault admittedly, but annoying none the less.",
+      "comments": [
+        {
+          "id": 18457846,
+          "user": "ENGNR",
+          "time": 1542272131,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>It&#x27;s an ongoing issue, I believe due to the way Android Chrome implemented keyboard events. Editors that specifically avoid the HTML endstate of contenteditable in favour of constructing a parallel state using keyboard events are all trying to deal with the same issue<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;issues&#x2F;2062\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ianstormtaylor&#x2F;slate&#x2F;issues&#x2F;2062<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457846"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18457796"
+    },
+    {
+      "id": 18460497,
+      "user": "burtonator",
+      "time": 1542298872,
+      "time_ago": "19 hours ago",
+      "type": "comment",
+      "content": "<p>I did a full heads down comparison of a bunch of text editors for Polar (<a href=\"https:&#x2F;&#x2F;getpolarized.io&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;getpolarized.io&#x2F;<\/a>) and their practical features and I ended up going with Summernote:<p><a href=\"https:&#x2F;&#x2F;summernote.org&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;summernote.org&#x2F;<\/a><p>it&#x27;s definitely not perfect and seems to not be developed as much as the others but it handles copy and paste VERY well.  I can literally copy test from my editor (intellij) and it keeps the formatting perfectly.<p>With Polar users need a way to reliably annotate their books and having a quality text editing component is important.<p>I think I&#x27;m going to look at Slate too but also look at CKEditor5... both seem like really decent options.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18460497"
+    },
+    {
+      "id": 18458811,
+      "user": "mguijarr",
+      "time": 1542286086,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I do not know Slate JS (yet), but I think it is worth\nmentioning react-draft-wysiwyg[1], a rich text editor\nmade on top of React and Draft. I used it in one of\nmy projects and it was really cool.<p>[1]: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;jpuri&#x2F;react-draft-wysiwyg\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;jpuri&#x2F;react-draft-wysiwyg<\/a>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458811"
+    },
+    {
+      "id": 18457503,
+      "user": "thecatspaw",
+      "time": 1542266549,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Are the examples deployed somewhere? Its a lot more convenient if I can check them out without cloning the whole repo<p>edit: Good morning everybody, the link is right above the list <a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;rich-text\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;#&#x2F;rich-text<\/a>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18457503"
+    },
+    {
+      "id": 18459088,
+      "user": "djklanac",
+      "time": 1542288953,
+      "time_ago": "21 hours ago",
+      "type": "comment",
+      "content": "<p>I used SlateJS a year ago and couldn\u2019t be more impressed. It struck a great balance with minimalist architecture while also providing the React building blocks I\u2019d rather use than create myself.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18459088"
+    },
+    {
+      "id": 18457533,
+      "user": "davidspiess",
+      "time": 1542267069,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>I used slate in one of my projects but replaced it eventually with draft.js.\nThe biggest pain points were:<p>Not stable yet. A lot of breaking changes between releases, so you have to update your code frequently.\nBreaking changes often introduced new bugs.\nBig in size (even bigger than draft.js).",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18457533"
+    },
+    {
+      "id": 18459881,
+      "user": "harel",
+      "time": 1542295167,
+      "time_ago": "20 hours ago",
+      "type": "comment",
+      "content": "<p>I spent a lot of time looking for Draft like editors that would be simple, small yet have the potential for power. This project nails it! Well done.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18459881"
+    },
+    {
+      "id": 18461430,
+      "user": "thehazard",
+      "time": 1542303959,
+      "time_ago": "17 hours ago",
+      "type": "comment",
+      "content": "<p>Love Slate. Amazing plugin system -- I&#x27;ve started integrating a backing CRDT with Slate, enabling realtime collab. Would recommend. Coming from Draft, it&#x27;s a order of magnitude more maintainable and much better developer experience.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18461430"
+    },
+    {
+      "id": 18457874,
+      "user": "joelanman",
+      "time": 1542272425,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>This looks cool - is there anything about accessibility testing - how well it works with screen readers for example? I couldn&#x27;t see anything in the docs.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18457874"
+    },
+    {
+      "id": 18460311,
+      "user": "jlturner",
+      "time": 1542297855,
+      "time_ago": "19 hours ago",
+      "type": "comment",
+      "content": "<p>I love how customizable this is. Text selection on iOS doesn\u2019t seem to work across styled text unfortunately. It would be great for RTF editing on mobile sites if it had better mobile support.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18460311"
+    },
+    {
+      "id": 18460258,
+      "time": 1542297553,
+      "time_ago": "19 hours ago",
+      "type": "comment",
+      "content": "[deleted]",
+      "deleted": true,
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18460258"
+    },
+    {
+      "id": 18460993,
+      "user": "wowowl",
+      "time": 1542301384,
+      "time_ago": "18 hours ago",
+      "type": "comment",
+      "content": "<p>Happy to see this topic re: rich text editors back on track. It&#x27;s one of those things that never seemed to evolve since the early &#x27;90 days. Google docs set the bar really high.<p>I have been struggling to find a good editor for my form builder site [0] and settled with quill but I like slate&#x27;s approach better<p>[0] <a href=\"https:&#x2F;&#x2F;www.inputu.com\" rel=\"nofollow\">https:&#x2F;&#x2F;www.inputu.com<\/a>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18460993"
+    },
+    {
+      "id": 18463587,
+      "user": "bkyan",
+      "time": 1542317582,
+      "time_ago": "13 hours ago",
+      "type": "comment",
+      "content": "<p>Has anyone tried using this for building code editors, or is it strictly for wysiwyg content?",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18463587"
+    },
+    {
+      "id": 18457512,
+      "user": "far34",
+      "time": 1542266832,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>What format is content stored in? Is it all RTF under the hood or something else more custom? Curious to know.<p>Also what&#x27;s the difference between using SlateJS vs. say Monaco editor which powers VSCode?",
+      "comments": [
+        {
+          "id": 18457552,
+          "user": "dumbfoundded",
+          "time": 1542267357,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>The whole point of slate is an immutable representation of a document. Without getting too much in the weeds, a document is an immutable object. Edits to the document are transforms. The obvious benefit is undo&#x2F;redo is pretty simple. The more subtle benefit is that really complicated document rules become tractable. I built temi.com using this (<a href=\"https:&#x2F;&#x2F;www.temi.com&#x2F;good-audio-quality\" rel=\"nofollow\">https:&#x2F;&#x2F;www.temi.com&#x2F;good-audio-quality<\/a>). One feature that Slate enables pretty easily is incremental saves. Since the object is immutable, you can pass changes to the server instead of the entire document by just checking element ids. You can get multi-person edits relatively easily as well.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457552"
+        },
+        {
+          "id": 18457524,
+          "user": "arsalanb",
+          "time": 1542267009,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Stored as a series of operational transformations, I think.<p>This site helps understand it \u2014 <a href=\"https:&#x2F;&#x2F;operational-transformation.github.io&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;operational-transformation.github.io&#x2F;<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457524"
+        },
+        {
+          "id": 18457535,
+          "user": "paperpunk",
+          "time": 1542267100,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>You define an internal schema, which is essentially just a tree structure according to your own use-case. In this way it lets you do editing of more complicated page elements than a typical WYSWYG editor.<p>You can provide (or use others&#x27;) serialisers and deserialisers to convert between that representation and something else, e.g. RTF, HTML.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457535"
+        },
+        {
+          "id": 18457519,
+          "user": "molikto",
+          "time": 1542266925,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>monaco  is not a rich text editor",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18457519"
+        }
+      ],
+      "comments_count": 4,
+      "level": 0,
+      "url": "item?id=18457512"
+    },
+    {
+      "id": 18457949,
+      "user": "jopsen",
+      "time": 1542273403,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Amazing that few of these editors works on mobile..",
+      "comments": [
+        {
+          "id": 18458019,
+          "user": "marijn",
+          "time": 1542274481,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>(<a href=\"https:&#x2F;&#x2F;prosemirror.net\" rel=\"nofollow\">https:&#x2F;&#x2F;prosemirror.net<\/a> does)",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18458019"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18457949"
+    },
+    {
+      "id": 18458133,
+      "user": "xrisk",
+      "time": 1542276100,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Does this have a plugin for collaborative support? I couldn&#x27;t find one on the plugins page.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458133"
+    },
+    {
+      "id": 18459010,
+      "user": "nabla9",
+      "time": 1542288062,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Does it work with mathematical formulas (LaTex)?",
+      "comments": [
+        {
+          "id": 18464160,
+          "user": "paperpunk",
+          "time": 1542321709,
+          "time_ago": "12 hours ago",
+          "type": "comment",
+          "content": "<p>Slate is not an editor so much as a framework for building editors. Which is to say yes, it would be a good basis for an editor for mathematical formulas, but you would have to create the schema yourself (MathML seems like a good starting point). Defining transformations so you could use the LaTeX syntax as short-cuts seems like it would not be too arduous \u2013 although obviously a complete implementation would be a vast undertaking.",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18464160"
+        }
+      ],
+      "comments_count": 1,
+      "level": 0,
+      "url": "item?id=18459010"
+    },
+    {
+      "id": 18458484,
+      "user": "manigandham",
+      "time": 1542281782,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Obligatory post of rich text editors&#x2F;frameworks: <a href=\"https:&#x2F;&#x2F;gist.github.com&#x2F;manigandham&#x2F;65543a0bc2bf7006a487\" rel=\"nofollow\">https:&#x2F;&#x2F;gist.github.com&#x2F;manigandham&#x2F;65543a0bc2bf7006a487<\/a><p>Lots of progress in this space but they all seem to be coalescing into the same basic style. For standard apps that just need rich&#x2F;html input, I highly recommend Froala.",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458484"
+    },
+    {
+      "id": 18457887,
+      "user": "Kiro",
+      "time": 1542272574,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Would this be overkill to use just for a textbox with realtime code highlight (for SQL)? That&#x27;s the only feature I&#x27;m interested in.",
+      "comments": [
+        {
+          "id": 18465882,
+          "user": "jim_bailie",
+          "time": 1542336211,
+          "time_ago": "8 hours ago",
+          "type": "comment",
+          "content": "<p>Check out Ace Editor too:\n<a href=\"https:&#x2F;&#x2F;ace.c9.io&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;ace.c9.io&#x2F;<\/a>",
+          "comments": [
+
+          ],
+          "comments_count": 0,
+          "level": 1,
+          "url": "item?id=18465882"
+        },
+        {
+          "id": 18457995,
+          "user": "playworker",
+          "time": 1542274152,
+          "time_ago": "a day ago",
+          "type": "comment",
+          "content": "<p>Yes, you probably want something like CodeMirror <a href=\"https:&#x2F;&#x2F;codemirror.net&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;codemirror.net&#x2F;<\/a>",
+          "comments": [
+            {
+              "id": 18465239,
+              "user": "joshmarlow",
+              "time": 1542330347,
+              "time_ago": "10 hours ago",
+              "type": "comment",
+              "content": "<p>I&#x27;d second CodeMirror - I&#x27;ve been tinkering with it (v2 - <a href=\"https:&#x2F;&#x2F;codemirror.net&#x2F;2&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;codemirror.net&#x2F;2&#x2F;<\/a>) for a couple of weeks and it&#x27;s pretty nice to use. I&#x27;m using a bit of simple syntax highlighting.<p>There&#x27;s also a react wrapper (for versions 1 and 2).",
+              "comments": [
+
+              ],
+              "comments_count": 0,
+              "level": 2,
+              "url": "item?id=18465239"
+            }
+          ],
+          "comments_count": 1,
+          "level": 1,
+          "url": "item?id=18457995"
+        }
+      ],
+      "comments_count": 3,
+      "level": 0,
+      "url": "item?id=18457887"
+    },
+    {
+      "id": 18458056,
+      "user": "grizzles",
+      "time": 1542275026,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Does it support katex?",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458056"
+    },
+    {
+      "id": 18458848,
+      "user": "mattlondon",
+      "time": 1542286424,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>Doesn&#x27;t seem work in Firefox 63 - seem to get errors when clicking around:<p>An error was thrown by one of the example&#x27;s React components!<p>a&#x2F;n.renderBlockButton@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:22760\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2276...<\/a>\nvalue@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:25050\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2505...<\/a>\nMi@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:62666\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6266...<\/a>\nTi@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:67552\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6755...<\/a>\nmo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77129\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7712...<\/a>\nfo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77436\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7743...<\/a>\nZo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80984\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8098...<\/a>\nVo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80496\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8049...<\/a>\nWo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80322\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8032...<\/a>\nIo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:79695\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7969...<\/a>\nyo@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:78927\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7892...<\/a>\nenqueueSetState@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:54463\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:5446...<\/a>\nb.prototype.setState@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:14:1264\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:14:1264<\/a>\na&#x2F;n.onChange@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:23717\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2371...<\/a>\nonChange@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:185776\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:18577...<\/a>\nvalue@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:114892\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:11489...<\/a>\nvalue&#x2F;&lt;@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:114685\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:1:11468...<\/a>\no@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:161684\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:1616...<\/a>\nC&#x2F;&lt;@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:161806\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:1618...<\/a>\nu@<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:164856\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:1648...<\/a><p><pre><code>    in a\n    in a\n    in a\n    in div\n    in Styled(div)\n    in div\n    in a\n    in a\n    in a\n    in a<\/code><\/pre>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458848"
+    },
+    {
+      "id": 18458434,
+      "user": "vikaskbh",
+      "time": 1542281003,
+      "time_ago": "a day ago",
+      "type": "comment",
+      "content": "<p>TypeError: Cannot read property &#x27;key&#x27; of undefined\n    at a.n.renderBlockButton (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:22776\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2277...<\/a>)\n    at a.value (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:25055\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:42:2505...<\/a>)\n    at Mi (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:62668\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6266...<\/a>)\n    at Ti (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:67552\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:6755...<\/a>)\n    at mo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77129\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7712...<\/a>)\n    at fo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:77436\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7743...<\/a>)\n    at Zo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80984\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8098...<\/a>)\n    at Vo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80496\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8049...<\/a>)\n    at Wo (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:80322\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:8032...<\/a>)\n    at Io (<a href=\"https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:79695\" rel=\"nofollow\">https:&#x2F;&#x2F;www.slatejs.org&#x2F;main-1783ad63c9cf9b77dd4d.js:22:7969...<\/a>)<p><pre><code>    in a\n    in a\n    in a\n    in div\n    in Styled(div)\n    in div\n    in a\n    in a\n    in a\n    in a<\/code><\/pre>",
+      "comments": [
+
+      ],
+      "comments_count": 0,
+      "level": 0,
+      "url": "item?id=18458434"
+    }
+  ],
+  "comments_count": 113,
+  "url": "https:\/\/docs.slatejs.org",
+  "domain": "docs.slatejs.org"
+}

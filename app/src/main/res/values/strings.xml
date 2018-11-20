@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HN Browser</string>
+
+    <string name="main_posted_by"><![CDATA[ by <b>%1$s</b> %2$s ]]></string>
 </resources>
