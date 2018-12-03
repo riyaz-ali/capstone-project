@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  */
 public class FeedItemAdapter extends ArrayAdapter<FeedItem, FeedItemAdapter.ViewHolder> {
 
-    // ViewHolder impl
+    // VH impl
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.feed_title)
         TextView title;

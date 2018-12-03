@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.riyaz.hnbrowser">
+    package="com.github.riyaz.hnbrowser"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -9,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:parentActivityName=".views.main.MainActivity" android:name=".views.detail.DetailActivity"></activity>
         <activity
             android:name=".views.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.github.riyaz.hnbrowser.R;
 import com.github.riyaz.hnbrowser.models.FeedItem;
+import com.github.riyaz.hnbrowser.views.detail.DetailActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -48,6 +49,6 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
     @Override
     public void onClick(@NonNull FeedItem feed) {
-        Log.d("MainActivity", feed.getTitle());
+        startActivity(DetailActivity.show(this, feed));
     }
 }
